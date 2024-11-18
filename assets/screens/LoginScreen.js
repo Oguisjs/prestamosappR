@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 100, // Hace que sobresalga por encima del contenedor principal
+      top: 120, // Hace que sobresalga por encima del contenedor principal
       zIndex: 2, // Garantiza que el logo esté por encima de otros elementos
   },
   logo: {

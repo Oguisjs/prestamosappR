@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button, View, Text } from 'react-native';
+import BottomBar from './BottomBar';
 
 export default function HomeScreen({ navigation }) {
   return (
@@ -9,6 +10,7 @@ export default function HomeScreen({ navigation }) {
         title="Ir a login"
         onPress={() => navigation.goBack()}
       />
+      <BottomBar/>
     </View>
   );
 }
