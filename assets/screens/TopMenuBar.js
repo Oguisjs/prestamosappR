@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, Image, StyleSheet } from 'react-native';
 
+const logo = require('../img/Logo.png');
+
 const TopMenuBar = ({ navigation }) => {
   return (
     <View style={styles.container}>
       {/* Logo */}
       <Image 
-        source={ require('../img/Logo.png')}// Reemplaza con tu logo
+        source={logo}// Reemplaza con tu logo
         style={styles.logosup} 
       />
 

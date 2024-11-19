@@ -9,10 +9,10 @@ export default function LoginScreen({navigation}) {
   return (
     <ImageBackground  style={styles.background} source={background}>
     <View style={styles.container} background={background} >
+      <View style={styles.loginContainer}>
       <View style={styles.logoContainer}>
         <Image style={styles.logo} source={logo} />
       </View>
-      <View style={styles.loginContainer}>
         <Text style={styles.label}>Usuario</Text>
         <TextInput style={styles.input} placeholder="Ingrese su usuario" placeholderTextColor="#bbb" />
         
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
       justifyContent: 'center',
       alignItems: 'center',
       position: 'absolute',
-      top: 120, // Hace que sobresalga por encima del contenedor principal
+      top: -40, // Hace que sobresalga por encima del contenedor principal
       zIndex: 2, // Garantiza que el logo esté por encima de otros elementos
   },
   logo: {
