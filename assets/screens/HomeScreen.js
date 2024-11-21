@@ -2,9 +2,10 @@ import React from 'react';
 import { Button, View, Text, StyleSheet, SafeAreaView, ImageBackground, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import BottomBar from './BottomBar';
-
+{/* Botón 1 */}
 export default function HomeScreen({ navigation }) {
   return (
+    
     <SafeAreaView style={styles.safeArea}>
       {/* Imagen de fondo */}
       <ImageBackground
