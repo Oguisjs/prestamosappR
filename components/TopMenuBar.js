@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, SafeAreaView } from 'react-native';
+import { View, Text, TouchableOpacity, Image, StyleSheet, SafeAreaView, Platform } from 'react-native';
 import { useNavigationState } from '@react-navigation/native';
+import { responsiveWidth, responsiveHeight } from 'react-native-responsive-dimensions';
 
 const logo = require('../assets/img/Logo.png');
 
@@ -19,8 +20,6 @@ const TopMenuBar = ({ navigation }) => {
         return 'Préstamos';
       case 'Abonar':
         return 'Abonar';
-      case 'Salir':
-        return 'Salir';
       case 'Salir':
         return 'Salir';
       default:
@@ -51,14 +50,38 @@ const TopMenuBar = ({ navigation }) => {
           <Text style={styles.title}>{getTitle()}</Text>
         </View>
 
-        {/* Menú hamburguesa */}
-        <TouchableOpacity onPress={() => setMenuVisible(!menuVisible)}>
-          <Text style={styles.hamburgerMenu}>☰</Text>
-        </TouchableOpacity>
+        {/* Menú hamburguesa en móvil o menú horizontal en web */}
+        {Platform.OS === 'web' ? (
+          <View style={styles.menuHorizontal}>
+            {filteredMenuOptions.map((option, index) => (
+              <TouchableOpacity
+                key={index}
+                onPress={() => navigation.navigate(option.navigateTo)}
+                style={[
+                  styles.menuItem,
+                  option.label === 'Salir' && styles.exitButtonWeb, // Aplicar fondo solo a "Salir" en web
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.menuText,
+                    option.label === 'Salir' && styles.exitTextWeb, // Estilo especial para "Salir" en web
+                  ]}
+                >
+                  {option.label}
+                </Text>
+              </TouchableOpacity>
+            ))}
+          </View>
+        ) : (
+          <TouchableOpacity onPress={() => setMenuVisible(!menuVisible)}>
+            <Text style={styles.hamburgerMenu}>☰</Text>
+          </TouchableOpacity>
+        )}
       </View>
 
-      {/* Menú desplegable */}
-      {menuVisible && (
+      {/* Menú desplegable en móvil */}
+      {menuVisible && Platform.OS !== 'web' && (
         <View style={styles.dropdownMenu}>
           {filteredMenuOptions.map((option, index) => (
             <TouchableOpacity
@@ -86,7 +109,7 @@ const TopMenuBar = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  bgcolor:{
+  bgcolor: {
     backgroundColor: '#283049',
   },
   container: {
@@ -115,6 +138,22 @@ const styles = StyleSheet.create({
     fontSize: 30,
     color: '#FFFFFF',
   },
+  menuHorizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  menuItem: {
+    marginHorizontal: 20,
+  },
+  exitButtonWeb: {
+    backgroundColor: '#276D9B',
+    borderRadius: 5,
+    paddingHorizontal: 20,
+  },
+  exitTextWeb: {
+    color: '#FFFFFF', // Texto blanco para "Salir"
+  },
   dropdownMenu: {
     backgroundColor: '#283049',
     padding: 10,
@@ -129,8 +168,6 @@ const styles = StyleSheet.create({
     fontSize: 18,
     paddingVertical: 10,
     textAlign: 'center',
-    borderBottomWidth: 1,
-    borderBottomColor: '#FFFFFF',
   },
   closeButton: {
     marginTop: 10,
