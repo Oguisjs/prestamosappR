@@ -1,5 +1,6 @@
 import { View, Text, SafeAreaView, StyleSheet } from "react-native";
 
+
 export default function LoansScreen(){
     return (
         <SafeAreaView>
@@ -7,6 +8,7 @@ export default function LoansScreen(){
                 <Text>Loans Screen</Text>
             </View>
         </SafeAreaView>
+        
     );
 }
 

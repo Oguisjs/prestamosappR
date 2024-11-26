@@ -1,19 +1,25 @@
 import React from "react";
 import { StyleSheet, Text, View, FlatList, TouchableOpacity, TextInput, SafeAreaView, ImageBackground, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+import BottomBar from "./BottomBar";
 
 const eliminar = require('../img/Eliminar.png');
 const editar = require('../img/Editar.png');
 
+import { useNavigation } from "@react-navigation/native"; // Importa el hook
+
 const ClientScreen = () => {
-  // Datos de ejemplo
+  const navigation = useNavigation(); // Accede al objeto de navegación
+
   const clients = [
     { id: "1", cedula: "12345678", nombre: "Juan Pérez", telefono: "555-1234", direccion: "Calle Falsa 123" },
     { id: "2", cedula: "87654321", nombre: "Ana Gómez", telefono: "555-5678", direccion: "Av. Siempre Viva 456" },
     { id: "3", cedula: "45678901", nombre: "Luis Martínez", telefono: "555-7890", direccion: "Boulevard Sol 789" },
+    { id: "4", cedula: "78912345", nombre: "María López", telefono: "555-1122", direccion: "Calle Luna 123" },
+    { id: "5", cedula: "32165487", nombre: "Carlos Torres", telefono: "555-3344", direccion: "Av. Mar 456" },
+    { id: "6", cedula: "65498732", nombre: "Elena Ruiz", telefono: "555-5566", direccion: "Plaza Sol 789" },
   ];
 
-  // Renderizador de cada fila
   const renderItem = ({ item }) => (
     <View style={styles.row}>
       <Text style={styles.cell}>{item.cedula}</Text>
@@ -25,7 +31,7 @@ const ClientScreen = () => {
           <Image source={editar} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton}>
-        <Image source={eliminar} />
+          <Image source={eliminar} />
         </TouchableOpacity>
       </View>
     </View>
@@ -33,21 +39,21 @@ const ClientScreen = () => {
 
   return (
     <ImageBackground
-      source={require('../img/background.jpeg')} // Reemplaza con tu imagen de fondo
+      source={require("../img/background.jpeg")}
       style={styles.background}
     >
       <SafeAreaView style={styles.container}>
-        {/* Barra Azul */}
         <View style={styles.headerBar}>
           <Text style={styles.title}>Clientes Activos</Text>
-          <TouchableOpacity style={styles.newClientButton}>
+          <TouchableOpacity
+            style={styles.newClientButton}
+            onPress={() => navigation.navigate("NewClient")} // Navega a la pantalla NewClient
+          >
             <Text style={styles.newClientButtonText}>Nuevo Cliente</Text>
           </TouchableOpacity>
         </View>
 
-        {/* Tabla con bordes y centrada */}
         <View style={styles.tableContainer}>
-          {/* Campo de búsqueda */}
           <View style={styles.searchContainer}>
             <TextInput
               style={styles.searchInput}
@@ -56,7 +62,6 @@ const ClientScreen = () => {
             <Ionicons name="search" size={20} color="gray" style={styles.searchIcon} />
           </View>
 
-          {/* Encabezado de la tabla */}
           <View style={styles.tableHeader}>
             <Text style={styles.headerCell}>Cédula</Text>
             <Text style={styles.headerCell}>Nombre Completo</Text>
@@ -65,14 +70,16 @@ const ClientScreen = () => {
             <Text style={styles.headerCell}>Acciones</Text>
           </View>
 
-          {/* Lista de clientes */}
           <FlatList
             data={clients}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
+            contentContainerStyle={{ paddingBottom: 10 }} // Espacio al final si es necesario
+            showsVerticalScrollIndicator={true} // Muest
           />
         </View>
       </SafeAreaView>
+      <BottomBar />
     </ImageBackground>
   );
 };
@@ -80,22 +87,20 @@ const ClientScreen = () => {
 const styles = StyleSheet.create({
   background: {
     flex: 1,
-    resizeMode: "cover", // Asegura que la imagen cubra el fondo
-    justifyContent: "center", // Centra verticalmente el contenido
-    alignItems: "center", // Centra horizontalmente el contenido
+    resizeMode: "cover",
+    justifyContent: "center",
+    alignItems: "center",
   },
   container: {
-    width: "90%", // Ancho de la tabla (90% de la pantalla)
-    backgroundColor: "#fff", // Fondo blanco para contraste
+    width: "90%",
+    backgroundColor: "#fff",
     borderRadius: 15,
-    overflow: "hidden", // Esquinas redondeadas
-    elevation: 5, // Sombra en Android
-    shadowColor: "#000", // Sombra en iOS
+    overflow: "hidden",
+    elevation: 5,
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
-    
-    
   },
   headerBar: {
     backgroundColor: "#B1D4E466",
@@ -114,7 +119,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#276D9B",
     paddingHorizontal: 15,
     paddingVertical: 8,
-    borderRadius: 15,
+    borderRadius: 10,
   },
   newClientButtonText: {
     color: "#FFFFFF",
@@ -125,22 +130,24 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#fff",
     borderRadius: 10,
+    paddingBottom: 5,
+    maxHeight: 400,
   },
   searchContainer: {
-    flexDirection: "row",
+    flexDirection: "row", // Alinea el texto y el ícono horizontalmente
+    justifyContent: "flex-end", // Posiciona la barra a la derecha
     alignItems: "center",
-    backgroundColor: "fff",
-    borderRadius: 5,
-    paddingHorizontal: 10,
+    width: "100%", // Ocupa el ancho completo del contenedor
     marginBottom: 10,
-    borderWidth: 1,
-    borderColor: "#276D9BDE",
-    
   },
   searchInput: {
-    flex: 1,
+    width: "50%", // La barra de búsqueda ocupa el 50% del ancho
     height: 40,
     fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#276D9B",
+    borderRadius: 5,
+    paddingHorizontal: 10,
   },
   searchIcon: {
     marginLeft: 10,

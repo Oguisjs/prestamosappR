@@ -1,46 +1,162 @@
-import React from 'react';
-import { Button, View, Text, StyleSheet, SafeAreaView, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, SafeAreaView, ImageBackground, TouchableOpacity, Image, Dimensions, LayoutAnimation, Platform, UIManager } from 'react-native';
 import { FontAwesome } from '@expo/vector-icons';
 import BottomBar from './BottomBar';
-{/* Botón 1 */}
-export default function HomeScreen({ navigation }) {
+
+// Habilitar LayoutAnimation para Android
+if (Platform.OS === 'android' && UIManager.setLayoutAnimationEnabledExperimental) {
+  UIManager.setLayoutAnimationEnabledExperimental(true);
+}
+// Componente para botones en la web
+function WebButtons() {
   return (
-    
+    <View style={styles.webButtonContainer}>
+      <TouchableOpacity style={styles.webCard} onPress={() => console.log('Web: Préstamos Activos')}>
+        <View style={styles.cardContent}>
+          <Image source={require('../img/Vector.png')} style={styles.icon} />
+          <Text style={styles.cardTitle}>PRÉSTAMOS ACTIVOS</Text>
+        </View>
+        <View style={styles.cardFooter}>
+          <Text style={styles.footerText}>Más Detalles</Text>
+          <FontAwesome name="chevron-right" size={16} color="#000" />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.webCard} onPress={() => console.log('Web: Clientes Activos')}>
+        <View style={styles.cardContent}>
+          <Image source={require('../img/clientes.png')} style={styles.icon} />
+          <Text style={styles.cardTitle}>CLIENTES ACTIVOS</Text>
+        </View>
+        <View style={styles.cardFooter}>
+          <Text style={styles.footerText}>Más Detalles</Text>
+          <FontAwesome name="chevron-right" size={16} color="#000" />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
+// Componente para botones en tablets
+function TabletButtons() {
+  const [isPortrait, setIsPortrait] = useState(true);
+
+  const handleOrientationChange = () => {
+    const { width, height } = Dimensions.get('window');
+    const portrait = height > width;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsPortrait(portrait);
+  };
+
+  useEffect(() => {
+    handleOrientationChange();
+    const subscription = Dimensions.addEventListener('change', handleOrientationChange);
+    return () => subscription?.remove();
+  }, []);
+
+  return (
+    <View
+    style={[
+      styles.tabletButtonRow,
+      isPortrait ? styles.tabletButtonRow : styles.tabletButtonColumn,
+    ]}
+    >
+      <TouchableOpacity style={styles.card} onPress={() => console.log('Tablet: Préstamos Activos')}>
+        <View style={styles.cardContent}>
+          <Image source={require('../img/Vector.png')} style={styles.icon} />
+          <Text style={styles.cardTitle}>PRÉSTAMOS ACTIVOS</Text>
+        </View>
+        <View style={styles.cardFooter}>
+          <Text style={styles.footerText}>Más Detalles</Text>
+          <FontAwesome name="chevron-right" size={16} color="#000" />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.card} onPress={() => console.log('Tablet: Clientes Activos')}>
+        <View style={styles.cardContent}>
+          <Image source={require('../img/clientes.png')} style={styles.icon} />
+          <Text style={styles.cardTitle}>CLIENTES ACTIVOS</Text>
+        </View>
+        <View style={styles.cardFooter}>
+          <Text style={styles.footerText}>Más Detalles</Text>
+          <FontAwesome name="chevron-right" size={16} color="#000" />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+// Componente para botones en celulares
+function MobileButtons() {
+  const [isPortrait, setIsPortrait] = useState(true);
+
+  const handleOrientationChange = () => {
+    const { width, height } = Dimensions.get('window');
+    const portrait = height > width;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    setIsPortrait(portrait);
+  };
+
+  useEffect(() => {
+    handleOrientationChange();
+    const subscription = Dimensions.addEventListener('change', handleOrientationChange);
+    return () => subscription?.remove();
+  }, []);
+
+  return (
+    <View
+    style={[
+      styles.mobileButtonRow,
+      isPortrait ? styles.mobileButtoncolRow : styles.mobileButtonColumn,
+    ]}
+    >
+      <TouchableOpacity style={styles.card} onPress={() => console.log('Celular: Préstamos Activos')}>
+        <View style={styles.cardContent}>
+          <Image source={require('../img/Vector.png')} style={styles.icon} />
+          <Text style={styles.cardTitle}>PRÉSTAMOS ACTIVOS</Text>
+        </View>
+        <View style={styles.cardFooter}>
+          <Text style={styles.footerText}>Más Detalles</Text>
+          <FontAwesome name="chevron-right" size={16} color="#000" />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.card} onPress={() => console.log('Celular: Clientes Activos')}>
+        <View style={styles.cardContent}>
+          <Image source={require('../img/clientes.png')} style={styles.icon} />
+          <Text style={styles.cardTitle}>CLIENTES ACTIVOS</Text>
+        </View>
+        <View style={styles.cardFooter}>
+          <Text style={styles.footerText}>Más Detalles</Text>
+          <FontAwesome name="chevron-right" size={16} color="#000" />
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+export default function HomeScreen({ navigation }) {
+  const [isTablet, setIsTablet] = useState(false);
+
+  useEffect(() => {
+    const { width } = Dimensions.get('window');
+    const tablet = width >= 768; // Umbral para diferenciar tablet de móvil
+    setIsTablet(tablet);
+  }, []);
+
+  return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Imagen de fondo */}
       <ImageBackground
-        source={require('../img/background.jpeg')} // Reemplaza con la ruta de tu imagen
+        source={require('../img/background.jpeg')}
         style={styles.backgroundImage}
         resizeMode="cover"
       >
-      <View style={styles.container}>
-         <View style={styles.buttonRow}>
-          {/* Botón 1 */}
-          <TouchableOpacity style={styles.card} onPress={() => console.log('Préstamos Activos')}>
-              <View style={styles.cardContent}>
-                <Image source={require('../img/Vector.png')}  style={styles.icon} />
-                <Text style={styles.cardTitle}>PRÉSTAMOS ACTIVOS</Text>
-              </View>
-              <View style={styles.cardFooter}>
-                <Text style={styles.footerText}>Más Detalles</Text>
-                <FontAwesome name="chevron-right" size={16} color="#000" />
-              </View>
-            </TouchableOpacity>
-          {/* Botón 2 */}
-          <TouchableOpacity style={styles.card} onPress={() => console.log('Opción 2')}>
-              <View style={styles.cardContent}>
-                <Image source={require('../img/clientes.png')} style={styles.icon} />
-                <Text style={styles.cardTitle}>CLIENTES ACTIVOS</Text>
-              </View>
-              <View style={styles.cardFooter}>
-                <Text style={styles.footerText}>Más Detalles</Text>
-                <FontAwesome name="chevron-right" size={16} color="#000" />
-              </View>
-            </TouchableOpacity>
-          </View>
-      </View>
+        <View style={styles.container}>
+          {Platform.OS === 'web' ? (
+            <WebButtons />
+          ) : isTablet ? (
+            <TabletButtons />
+          ) : (
+            <MobileButtons />
+          )}
+        </View>
       </ImageBackground>
-      <BottomBar/>
+      <BottomBar />
     </SafeAreaView>
   );
 }
@@ -48,80 +164,111 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#fff', // Fondo blanco para toda la pantalla
+    backgroundColor: '#fff',
   },
   backgroundImage: {
     flex: 1,
     resizeMode: 'cover',
-    justifyContent: 'center', // Centra el contenido verticalmente
+    justifyContent: 'center',
   },
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 20, // Espaciado alrededor de los botones
+    padding: 20,
   },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
-  buttonRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly', // Espaciado uniforme entre botones
+  // Estilos para botones en celulares
+  mobileButtonRow: {
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    width: '70%', // Asegura que ocupe todo el ancho disponible
+    flexDirection: 'row', // Por defecto, columna para móviles
   },
-  card: {
-    backgroundColor: '#fff', // Fondo blanco
-    borderRadius: 10, // Bordes ligeramente curvados
-    width: '40%', // Ocupa el 45% del contenedor
-    height: 175, // Altura fija para garantizar el footer en la parte inferior
+  mobileButtonColumn: {
+    flexDirection: 'column', // Cambia a fila para horizontales en móviles
+  },
+  // Estilos para botones en tablets
+  tabletButtonRow: {
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    flexDirection: 'row', // Por defecto, columna para tablets en vertical
+  },
+  tabletButtonColumn: {
+    flexDirection: 'column', // Cambia a fila para horizontales en tablets
+  },
+  // Estilos para botones en la web
+  webButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    width: '100%',
+    paddingHorizontal: 20,
+  },
+  webCard: {
+    backgroundColor: '#f5f5f5',
+    borderRadius: 15,
+    width: '30%',
+    height: 200,
     paddingTop: 20,
     paddingHorizontal: 10,
-    paddingBottom: 50, // Espacio para evitar colisiones con el footer
     alignItems: 'center',
-    justifyContent: 'flex-start', // Alinea los elementos en la parte superior de la tarjeta
-    shadowColor: '#000', // Sombra para dar profundidad
+    justifyContent: 'flex-start',
+    shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 3,
-    elevation: 5, // Elevación para Android
-    overflow: 'hidden', // Previene el desbordamiento del contenido
+    elevation: 5,
+    overflow: 'hidden',
+    marginVertical: 10,
+  },
+  card: {
+    backgroundColor: '#fff',
+    borderRadius: 10,
+    width: '40%',
+    height: 200,
+    paddingTop: 20,
+    paddingHorizontal: 10,
+    paddingBottom: 50,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
+    overflow: 'hidden',
+    marginVertical: 10,
+    marginHorizontal: 10,
   },
   cardContent: {
-    flexDirection: 'row', // Elementos en fila
-    alignItems: 'center', // Alinear verticalmente
-    justifyContent: 'flex-start', // El icono y el texto inician desde la izquierda
-    marginVertical: 20, // Espaciado vertical
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginVertical: 20,
     width: '100%',
   },
   icon: {
     marginLeft: 15,
-    width: 70,  // Ancho de la imagen
-    height: 70, // Alto de la imagen
-    resizeMode: 'contain', // Asegura que la imagen mantenga sus proporciones
+    width: 70,
+    height: 70,
+    resizeMode: 'contain',
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    textAlign: 'center',
     color: '#000',
-    flexWrap: 'wrap',  // Permite que el texto se envuelva en múltiples líneas si es necesario
-    textAlign: 'center', // Alinea el texto en el centro
-    width: '80%', // Asegura que el texto no ocupe todo el espacio disponible
-    
+    flexWrap: 'wrap',
+    textAlign: 'center',
+    width: '80%',
   },
-  
   cardFooter: {
-    position: 'absolute', // Posiciona el footer en la parte inferior
+    position: 'absolute',
     bottom: 0,
     left: 0,
     right: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    backgroundColor: '#b3d4fc', // Azul claro
+    backgroundColor: '#b3d4fc',
     paddingVertical: 10,
     paddingHorizontal: 10,
     borderBottomLeftRadius: 10,
@@ -133,5 +280,6 @@ const styles = StyleSheet.create({
     color: '#000',
     marginRight: 5,
   },
+});
+
   
-})

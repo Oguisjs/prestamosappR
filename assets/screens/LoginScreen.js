@@ -1,37 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Image, ImageBackground} from 'react-native';
-
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Dimensions, Image, ImageBackground } from 'react-native';
 
 const logo = require('../img/Logo.png');
 const background = require('../img/background.jpeg');
 
-export default function LoginScreen({navigation}) {
+export default function LoginScreen({ navigation }) {
   return (
-    <ImageBackground  style={styles.background} source={background}>
-    <View style={styles.container} background={background} >
-      <View style={styles.loginContainer}>
-      <View style={styles.logoContainer}>
-        <Image style={styles.logo} source={logo} />
-      </View>
-        <Text style={styles.label}>Usuario</Text>
-        <TextInput style={styles.input} placeholder="Ingrese su usuario" placeholderTextColor="#bbb" />
-        
-        <Text style={styles.label}>Contraseña</Text>
-        <TextInput style={styles.input} placeholder="Ingrese su contraseña" placeholderTextColor="#bbb" secureTextEntry />
+    <ImageBackground style={styles.background} source={background}>
+      <View style={styles.container}>
+        <View style={styles.loginContainer}>
+          <View style={styles.logoContainer}>
+            <Image style={styles.logo} source={logo} />
+          </View>
+          <Text style={styles.label}>Usuario</Text>
+          <TextInput style={styles.input} placeholder="Ingrese su usuario" placeholderTextColor="#bbb" />
+          
+          <Text style={styles.label}>Contraseña</Text>
+          <TextInput style={styles.input} placeholder="Ingrese su contraseña" placeholderTextColor="#bbb" secureTextEntry />
 
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => navigation.navigate('Home')}>
-          <Text style={styles.buttonText}>Acceder</Text>
-        </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => navigation.navigate('Home')}>
+            <Text style={styles.buttonText}>Acceder</Text>
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
     </ImageBackground>
   );
 }
-const { width, height } = Dimensions.get('window');
-const isPortrait = height > width;
 
+const { width, height } = Dimensions.get('window');
+const isMobile = width < 768; // Detecta dispositivos móviles
 
 const styles = StyleSheet.create({
   background: {
@@ -44,25 +43,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   loginContainer: {
-    width: 500,
-    height: 500, 
+    width: isMobile ? width * 0.8 : 500, // En móviles, ajustamos el tamaño del contenedor
+    height: isMobile ? height * 0.4 : 500, // En móviles, ajustamos la altura
     backgroundColor: '#2D3A50',
     borderRadius: 30,
-    padding: 100,
+    padding: isMobile ? 20 : 100, // Menor padding en móviles
     alignItems: 'center',
     justifyContent: 'center',
-   // Deja espacio para el logo
   },
   logoContainer: {
-      width: 100,
-      height: 100,
-      backgroundColor: '#2D3A50',
-      borderRadius: 50,
-      justifyContent: 'center',
-      alignItems: 'center',
-      position: 'absolute',
-      top: -40, // Hace que sobresalga por encima del contenedor principal
-      zIndex: 2, // Garantiza que el logo esté por encima de otros elementos
+    width: 100,
+    height: 100,
+    backgroundColor: '#2D3A50',
+    borderRadius: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    top: -40, // Hace que sobresalga por encima del contenedor principal
+    zIndex: 2, // Garantiza que el logo esté por encima de otros elementos
   },
   logo: {
     width: 80,
@@ -98,4 +96,3 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-

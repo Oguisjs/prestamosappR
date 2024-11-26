@@ -6,6 +6,8 @@ import LoginScreen from '../screens/LoginScreen';
 import ClientScreen from '../screens/ClientScreen';
 import PayScreen from '../screens/PayScreen';
 import LoansScreen from '../screens/LoansScreen';
+import NewClientScreen from '../screens/NewClientScreen';
+import {Text} from "react-native";
 
 const ClienteScreen = () => <Text>Cliente Screen</Text>;
 const PrestamosScreen = () => <Text>Préstamos Screen</Text>;
@@ -32,6 +34,10 @@ export default function Router(){
           options={{
             headerShown: false, // Desactiva el encabezado para el login
           }}
+        />
+        <Stack.Screen
+          name="NewClient" // Nueva pantalla
+          component={NewClientScreen}
         />
         
       </Stack.Navigator>
