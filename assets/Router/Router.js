@@ -7,6 +7,9 @@ import ClientScreen from '../screens/ClientScreen';
 import PayScreen from '../screens/PayScreen';
 import LoansScreen from '../screens/LoansScreen';
 import NewClientScreen from '../screens/NewClientScreen';
+import EditClient from '../screens/EditClient';
+import NewLoan from '../screens/NewLoan';
+import SearchLoansScreen from '../screens/SearchLoansScreen';
 import {Text} from "react-native";
 
 const ClienteScreen = () => <Text>Cliente Screen</Text>;
@@ -39,7 +42,9 @@ export default function Router(){
           name="NewClient" // Nueva pantalla
           component={NewClientScreen}
         />
-        
+        <Stack.Screen name="EditClient" component={EditClient} options={{ title: 'Editar Cliente' }} />
+        <Stack.Screen name="NewLoan" component={NewLoan} options={{ title: 'Nuevo Prestamo' }} /> 
+        <Stack.Screen name="SearchLoansScreen" component={SearchLoansScreen} options={{ title: 'Prestamos' }} /> 
       </Stack.Navigator>
     </NavigationContainer>
     );

@@ -27,7 +27,10 @@ const ClientScreen = () => {
       <Text style={styles.cell}>{item.telefono}</Text>
       <Text style={styles.cell}>{item.direccion}</Text>
       <View style={styles.actionCell}>
-        <TouchableOpacity style={styles.iconButton}>
+        <TouchableOpacity
+          style={styles.iconButton}
+          onPress={() => navigation.navigate("EditClient", { client: item })} // Navegar con datos del cliente
+        >
           <Image source={editar} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.iconButton}>

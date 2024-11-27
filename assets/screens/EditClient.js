@@ -7,14 +7,19 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import { SelectList } from 'react-native-dropdown-select-list';  // Importa la librería
-import { useNavigation } from '@react-navigation/native';
+import { SelectList } from 'react-native-dropdown-select-list'; // Importamos SelectList
 import BottomBar from "./BottomBar";
 
-export default function NewClient() {
-  const navigation = useNavigation(); 
-  const [selectedGender, setSelectedGender] = useState('');
-  
+export default function EditClient({ route, navigation }) {
+  const { client } = route.params; // Recibe los datos del cliente como parámetro
+  const [name, setName] = useState(client.nombre);
+  const [apellido, setApellido] = useState(client.apellido || ""); // Nuevo campo
+  const [cedula, setCedula] = useState(client.cedula);
+  const [telefono, setTelefono] = useState(client.telefono);
+  const [direccion, setDireccion] = useState(client.direccion);
+  const [genero, setGenero] = useState(client.genero || ""); // Nuevo campo
+
+  // Opciones para el selector de género
   const genderOptions = [
     { key: '1', value: 'Masculino' },
     { key: '2', value: 'Femenino' },
@@ -27,103 +32,99 @@ export default function NewClient() {
       style={styles.background}
     >
       <View style={styles.formContainer}>
-        {/* Encabezado del formulario */}
+        {/* Encabezado */}
         <View style={styles.header}>
-          <Text style={styles.headerText}>NUEVO CLIENTE</Text>
+          <Text style={styles.headerText}>EDITAR CLIENTE</Text>
         </View>
 
-        {/* Información del Cliente */}
+        {/* Formulario */}
         <View style={styles.section}>
+          {/* Fila 1: Nombre, Apellido y Cédula */}
           <View style={styles.row}>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Nombres</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese nombres" />
+              <Text style={styles.label}>Nombre</Text>
+              <TextInput
+                style={[styles.input, styles.shadow]}
+                placeholder="Ingrese nombre"
+                value={name}
+                onChangeText={setName}
+              />
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Apellidos</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese apellidos" />
+              <Text style={styles.label}>Apellido</Text>
+              <TextInput
+                style={[styles.input, styles.shadow]}
+                placeholder="Ingrese apellido"
+                value={apellido}
+                onChangeText={setApellido}
+              />
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Cédula</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese cédula" />
+              <TextInput
+                style={[styles.input, styles.shadow]}
+                placeholder="Ingrese cédula"
+                value={cedula}
+                onChangeText={setCedula}
+              />
             </View>
           </View>
+
+          {/* Fila 2: Género, Dirección y Teléfono */}
           <View style={styles.row}>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Género</Text>
-              {/* Usamos SelectList para la lista desplegable */}
               <SelectList
-                setSelected={setSelectedGender}
+                setSelected={setGenero}
                 data={genderOptions}
                 save="value" // Almacena el valor seleccionado
                 placeholder="Seleccionar género"
                 boxStyles={[styles.input, styles.shadow]}
-                dropdownStyles={styles.dropdown}  // Estilo para el dropdown
+                dropdownStyles={styles.dropdown} // Estilo para el dropdown
               />
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Dirección</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese dirección" />
+              <TextInput
+                style={[styles.input, styles.shadow]}
+                placeholder="Ingrese dirección"
+                value={direccion}
+                onChangeText={setDireccion}
+              />
             </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Teléfono</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese teléfono" />
-            </View>
-          </View>
-        </View>
-
-        {/* Línea divisora y sección de Garante */}
-        <View style={styles.dividerContainer}>
-          <View style={styles.dividerL} />
-          <Text style={styles.dividerText}>INFORMACIÓN {'\n'}SOBRE GARANTE</Text>
-          <View style={styles.dividerR} />
-        </View>
-
-        <View style={styles.section}>
-          <View style={styles.row}>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Nombre</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese nombre" />
-            </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Apellido</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese apellido" />
-            </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Cédula</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese cédula" />
-            </View>
-          </View>
-          <View style={styles.row}>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Teléfono</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese teléfono" />
-            </View>
-            <View style={styles.inputContainer}>
-              <Text style={styles.label}>Dirección</Text>
-              <TextInput style={[styles.input, styles.shadow]} placeholder="Ingrese dirección" />
+              <TextInput
+                style={[styles.input, styles.shadow]}
+                placeholder="Ingrese teléfono"
+                value={telefono}
+                onChangeText={setTelefono}
+              />
             </View>
           </View>
         </View>
 
         {/* Botones */}
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.cancelButton}>
-            <Text style={styles.buttonText}
-            onPress={() => navigation.goBack()} >Cancelar</Text>
+          <TouchableOpacity
+            style={styles.cancelButton}
+            onPress={() => navigation.goBack()} // Volver sin guardar
+          >
+            <Text style={styles.buttonText}>Cancelar</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.saveButton}>
-            <Text style={styles.buttonText}
+          <TouchableOpacity
+            style={styles.saveButton}
             onPress={() => {
               // Aquí se guardaría la edición
               navigation.goBack();
-            }} >Guardar</Text>
+            }}
+          >
+            <Text style={styles.buttonText}>Guardar</Text>
           </TouchableOpacity>
         </View>
       </View>
-      <BottomBar/>
+      <BottomBar />
     </ImageBackground>
-    
   );
 }
 
@@ -176,17 +177,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    
     padding: 10,
     borderWidth: 1,
     borderColor: '#B1D4E4',
     borderRadius: 5,
     backgroundColor: '#fff',
-  },
-  dropdown: {
-    borderColor: '#c7c7c7',
-    borderRadius: 5,
-    elevation: 3,
   },
   shadow: {
     shadowColor: '#000',
@@ -195,29 +190,12 @@ const styles = StyleSheet.create({
     shadowRadius: 3.5,
     elevation: 3,
   },
-  dividerContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 20,
-    paddingHorizontal: 20,
-  },
-  dividerText: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    color: '#757575',
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  dividerL: {
-    width: 20,
-    height: 5,
-    backgroundColor: '#B1D4E49C',
-  },
-  dividerR: {
-    flex: 1,
-    height: 5,
-    width: 2,
-    backgroundColor: '#B1D4E49C',
+  dropdown: {
+    borderColor: '#c7c7c7',
+    borderRadius: 5,
+    backgroundColor: '#fff',
+    marginTop: 5,
+    elevation: 3, // Añadido para mantener la sombra en el dropdown
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -244,3 +222,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
+
